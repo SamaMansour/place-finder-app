@@ -1,25 +1,34 @@
+
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-     <link rel="stylesheet" href="./public/CSS/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW5BrKSbrKb2c09gg1Mnzycq-dtSgZKDE"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AmagiTech/JSLoader/amagiloader.js"></script>
+  <title>Place Finder</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./public/CSS/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDciVvIZWhVEZsRKVOSS_nTYEftOTLplOY"></script>
+  <script src="https://cdn.jsdelivr.net/gh/AmagiTech/JSLoader/amagiloader.js"></script>
 </head>
 <form>
-<div class="form-group input-group">
+  <div class="form-group input-group">
     <input type="text" id="search_location" class="form-control" placeholder="Search location">
     <div class="input-group-btn">
-        <button class="btn btn-primary get_map" type="submit">
-            Search
-        </button>
+      <button class="btn btn-primary get_map" type="submit">
+          Search
+      </button>
     </div>
-</div>
+  </div>
 </form>
 
 <!-- display google map -->
 <div id="geomap"></div>
+
+<style>
+#geomap{
+    width: 100%;
+    height: 400px;
+}
+</style>
 
 <script>
 var geocoder;
