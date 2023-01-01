@@ -1,0 +1,21 @@
+<head>
+    <title>Place Finder</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFJSuh82FYFXoEVvrd-opz9y8TC38LzYQ"></script>
+</head>
+<form>
+<div class="form-group input-group">
+    <input type="text" id="search_location" class="form-control" placeholder="Search location">
+    <div class="input-group-btn">
+        <button class="btn btn-primary get_map" type="submit">
+            Search
+        </button>
+    </div>
+</div>
+</form>
+
+<!-- display google map -->
+<div id="geomap"></div>
