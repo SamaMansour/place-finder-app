@@ -15,3 +15,7 @@
 1. Google Maps
 2. Javascript Maps Api
 
+# Expected Output
+
+
+![Screenshot 2023-01-01 210027](https://user-images.githubusercontent.com/51129968/210180476-1b4d7df0-addd-4f37-9fbc-d9bb1114ab7c.png)
