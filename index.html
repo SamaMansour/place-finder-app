@@ -1,10 +1,11 @@
 <head>
-    <title>Place Finder</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+     <link rel="stylesheet" href="./public/CSS/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFJSuh82FYFXoEVvrd-opz9y8TC38LzYQ"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCW5BrKSbrKb2c09gg1Mnzycq-dtSgZKDE"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AmagiTech/JSLoader/amagiloader.js"></script>
 </head>
 <form>
 <div class="form-group input-group">
@@ -19,3 +20,105 @@
 
 <!-- display google map -->
 <div id="geomap"></div>
+
+<script>
+var geocoder;
+var map;
+var marker;
+
+
+function initialize() {
+  var initialLat = 36.169648
+  var initialLong = -115.141;
+ 
+
+  var latlng = new google.maps.LatLng(initialLat, initialLong);
+  var options = {
+    zoom: 16,
+    center: latlng,
+  };
+
+  map = new google.maps.Map(document.getElementById("geomap"), options);
+
+  geocoder = new google.maps.Geocoder();
+
+  marker = new google.maps.Marker({
+    map: map,
+    draggable: true,
+    position: latlng,
+  });
+
+  google.maps.event.addListener(marker, "dragend", function () {
+    var point = marker.getPosition();
+    map.panTo(point);
+    geocoder.geocode(
+      { latLng: marker.getPosition() },
+      function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          map.setCenter(results[0].geometry.location);
+          marker.setPosition(results[0].geometry.location);
+        }
+      }
+    );
+  });
+}
+
+$(document).ready(function () {
+  initialize();
+
+  $(function () {
+    $("#search_location").autocomplete({
+      source: function (request, response) {
+        geocoder.geocode(
+          {
+            address: request.term,
+          },
+          function (results, status) {
+            response(
+              $.map(results, function (item) {
+                return {
+                  label: item.formatted_address,
+                  value: item.formatted_address,
+                };
+              })
+            );
+          }
+        );
+      },
+      select: function (event, ui) {
+        var latlng = new google.maps.LatLng(ui.item.lat, ui.item.lon);
+        marker.setPosition(latlng);
+
+        initialize();
+      },
+    });
+  });
+
+
+  $(".get_map").click(function (e) {
+    AmagiLoader.show();
+    setTimeout(() => {
+      AmagiLoader.hide();
+    }, 3000);
+    var address = $("#search_location").val();
+    geocoder.geocode({ address: address }, function (results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        map.setCenter(results[0].geometry.location);
+        marker.setPosition(results[0].geometry.location);
+      } else {
+        alert("Couldn't select the following location: " + status);
+      }
+    });
+    e.preventDefault();
+  });
+});
+
+
+</script>
+
+<script>
+ AmagiLoader.show();
+ setTimeout(() => {
+    AmagiLoader.hide();
+ }, 3000);
+</script>
