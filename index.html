@@ -31,103 +31,103 @@
 </style>
 
 <script>
-var geocoder;
-var map;
-var marker;
+  var geocoder;
+  var map;
+  var marker;
 
 
-function initialize() {
-  var initialLat = 36.169648
-  var initialLong = -115.141;
- 
+  function initialize() {
+    var initialLat = 36.169648
+    var initialLong = -115.141;
+  
 
-  var latlng = new google.maps.LatLng(initialLat, initialLong);
-  var options = {
-    zoom: 16,
-    center: latlng,
-  };
+    var latlng = new google.maps.LatLng(initialLat, initialLong);
+    var options = {
+      zoom: 16,
+      center: latlng,
+    };
 
-  map = new google.maps.Map(document.getElementById("geomap"), options);
+    map = new google.maps.Map(document.getElementById("geomap"), options);
 
-  geocoder = new google.maps.Geocoder();
+    geocoder = new google.maps.Geocoder();
 
-  marker = new google.maps.Marker({
-    map: map,
-    draggable: true,
-    position: latlng,
-  });
+    marker = new google.maps.Marker({
+      map: map,
+      draggable: true,
+      position: latlng,
+    });
 
-  google.maps.event.addListener(marker, "dragend", function () {
-    var point = marker.getPosition();
-    map.panTo(point);
-    geocoder.geocode(
-      { latLng: marker.getPosition() },
-      function (results, status) {
+    google.maps.event.addListener(marker, "dragend", function () {
+      var point = marker.getPosition();
+      map.panTo(point);
+      geocoder.geocode(
+        { latLng: marker.getPosition() },
+        function (results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+            marker.setPosition(results[0].geometry.location);
+          }
+        }
+      );
+    });
+  }
+
+  $(document).ready(function () {
+    initialize();
+
+    $(function () {
+      $("#search_location").autocomplete({
+        source: function (request, response) {
+          geocoder.geocode(
+            {
+              address: request.term,
+            },
+            function (results, status) {
+              response(
+                $.map(results, function (item) {
+                  return {
+                    label: item.formatted_address,
+                    value: item.formatted_address,
+                  };
+                })
+              );
+            }
+          );
+        },
+        select: function (event, ui) {
+          var latlng = new google.maps.LatLng(ui.item.lat, ui.item.lon);
+          marker.setPosition(latlng);
+
+          initialize();
+        },
+      });
+    });
+
+
+    $(".get_map").click(function (e) {
+      AmagiLoader.show();
+      setTimeout(() => {
+        AmagiLoader.hide();
+      }, 3000);
+      var address = $("#search_location").val();
+      geocoder.geocode({ address: address }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
           map.setCenter(results[0].geometry.location);
           marker.setPosition(results[0].geometry.location);
+        } else {
+          alert("Couldn't select the following location: " + status);
         }
-      }
-    );
-  });
-}
-
-$(document).ready(function () {
-  initialize();
-
-  $(function () {
-    $("#search_location").autocomplete({
-      source: function (request, response) {
-        geocoder.geocode(
-          {
-            address: request.term,
-          },
-          function (results, status) {
-            response(
-              $.map(results, function (item) {
-                return {
-                  label: item.formatted_address,
-                  value: item.formatted_address,
-                };
-              })
-            );
-          }
-        );
-      },
-      select: function (event, ui) {
-        var latlng = new google.maps.LatLng(ui.item.lat, ui.item.lon);
-        marker.setPosition(latlng);
-
-        initialize();
-      },
+      });
+      e.preventDefault();
     });
   });
 
 
-  $(".get_map").click(function (e) {
+  </script>
+
+  <script>
     AmagiLoader.show();
     setTimeout(() => {
-      AmagiLoader.hide();
+        AmagiLoader.hide();
     }, 3000);
-    var address = $("#search_location").val();
-    geocoder.geocode({ address: address }, function (results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        map.setCenter(results[0].geometry.location);
-        marker.setPosition(results[0].geometry.location);
-      } else {
-        alert("Couldn't select the following location: " + status);
-      }
-    });
-    e.preventDefault();
-  });
-});
-
-
-</script>
-
-<script>
- AmagiLoader.show();
- setTimeout(() => {
-    AmagiLoader.hide();
- }, 3000);
-</script>
+  </script>
